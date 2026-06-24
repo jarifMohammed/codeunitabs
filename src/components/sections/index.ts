@@ -1,0 +1,9 @@
+export { CapabilitiesSection } from "./capabilities-section";
+export { CtaSection } from "./cta-section";
+export { FaqSection } from "./faq-section";
+export { FeaturesSection } from "./features-section";
+export { HeroSection } from "./hero-section";
+export { TeamSection } from "./team-section";
+export { TestimonialsSection } from "./testimonials-section";
+export { TechnologiesSection } from "./technologies-section";
+export { TrustSection } from "./trust-section";

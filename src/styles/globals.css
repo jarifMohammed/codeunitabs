@@ -34,3 +34,19 @@ button {
   background: rgba(254, 74, 0, 0.35);
   color: #ffffff;
 }
+
+/* Performance: promote animated elements to their own layer */
+[class*="animate-"] {
+  will-change: transform, opacity;
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

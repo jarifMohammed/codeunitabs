@@ -7,6 +7,7 @@ import { Zap } from "lucide-react";
 import { imageAssets } from "@/constants/assets";
 import { ActionButton } from "@/components/ui/action-button";
 import { SectionTag } from "@/components/ui/section-tag";
+import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
 
 const capabilityPanels = [
@@ -82,12 +83,29 @@ const capabilityPanels = [
 
 export function CapabilitiesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [contentKey, setContentKey] = useState(0);
   const activePanel = capabilityPanels[activeIndex];
+
+  const { ref: headingRef, inView: headingInView } = useInView<HTMLDivElement>();
+  const { ref: panelRef, inView: panelInView } = useInView<HTMLDivElement>();
+
+  function handleSelect(index: number) {
+    if (index === activeIndex) return;
+    setActiveIndex(index);
+    setContentKey((k) => k + 1);
+  }
 
   return (
     <section className="bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="mx-auto flex max-w-design flex-col gap-10 md:gap-16">
-        <div className="flex flex-col gap-6">
+        <div
+          ref={headingRef}
+          className={cn(
+            "flex flex-col gap-6",
+            "transition-all duration-700 ease-out",
+            headingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
+          )}
+        >
           <SectionTag icon={Zap} label="CAPABILITIES" />
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
@@ -96,7 +114,16 @@ export function CapabilitiesSection() {
             <ActionButton actionName="bookDemo">View More</ActionButton>
           </div>
         </div>
-        <div className="grid overflow-hidden border border-white/[0.05] bg-card/60 xl:grid-cols-[500px_1fr]">
+
+        <div
+          ref={panelRef}
+          className={cn(
+            "grid overflow-hidden border border-white/[0.05] bg-card/60 xl:grid-cols-[500px_1fr]",
+            "transition-all duration-700 ease-out",
+            panelInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+          )}
+          style={{ transitionDelay: panelInView ? "100ms" : "0ms" }}
+        >
           <aside className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px]">
             <nav aria-label="Capabilities" className="flex flex-col gap-3 sm:gap-4">
               {capabilityPanels.map((item, index) => {
@@ -112,9 +139,9 @@ export function CapabilitiesSection() {
                         : "border-white/[0.05] text-[#f5f5f5] hover:border-accent/40 hover:text-white",
                     )}
                     key={item.label}
-                    onClick={() => setActiveIndex(index)}
-                    onFocus={() => setActiveIndex(index)}
-                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => handleSelect(index)}
+                    onFocus={() => handleSelect(index)}
+                    onMouseEnter={() => handleSelect(index)}
                     type="button"
                   >
                     <span
@@ -159,7 +186,11 @@ export function CapabilitiesSection() {
               style={{ width: `${((activeIndex + 1) / capabilityPanels.length) * 100}%` }}
             />
 
-            <div className="relative flex w-full flex-col gap-5 bg-gradient-to-b from-white/0 to-white/[0.01] p-5 backdrop-blur-[2px] sm:p-8 md:gap-[23px] md:p-12">
+            <div
+              key={contentKey}
+              className="relative flex w-full flex-col gap-5 bg-gradient-to-b from-white/0 to-white/[0.01] p-5 backdrop-blur-[2px] sm:p-8 md:gap-[23px] md:p-12 animate-fade-in-up"
+              style={{ animationDuration: "0.45s" }}
+            >
               <div className="flex items-center justify-between gap-4 sm:gap-6">
                 <h3 className="font-montserrat text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.2] text-[#f5f5f5] transition duration-500 sm:text-[clamp(2.4rem,4.2vw,3rem)]">
                   {activePanel.title}
@@ -174,9 +205,12 @@ export function CapabilitiesSection() {
               <div className="flex flex-wrap gap-3 pt-2 sm:gap-4 md:pt-[17px]">
                 {activePanel.tags.map((tag, tagIndex) => (
                   <span
-                    className="translate-y-0 border border-white/10 bg-title-gradient px-3 py-2 font-montserrat text-xs font-semibold capitalize leading-[1.2] tracking-[1px] text-bg shadow-[0_10px_35px_rgba(0,0,0,0.18)] transition duration-500 sm:px-[17px] sm:py-[9px] sm:text-sm md:text-base"
+                    className="translate-y-0 border border-white/10 bg-title-gradient px-3 py-2 font-montserrat text-xs font-semibold capitalize leading-[1.2] tracking-[1px] text-bg shadow-[0_10px_35px_rgba(0,0,0,0.18)] transition-all duration-500 hover:scale-105 sm:px-[17px] sm:py-[9px] sm:text-sm md:text-base"
                     key={tag}
-                    style={{ transitionDelay: `${tagIndex * 45}ms` }}
+                    style={{
+                      transitionDelay: `${tagIndex * 45}ms`,
+                      animationDelay: `${tagIndex * 50 + 100}ms`,
+                    }}
                   >
                     {tag}
                   </span>

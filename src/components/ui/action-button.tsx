@@ -16,10 +16,22 @@ type ActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-accent text-white hover:bg-accentDark",
+  primary:
+    "bg-accent text-white hover:bg-accentDark relative overflow-hidden " +
+    "before:absolute before:inset-0 before:translate-x-[-110%] before:skew-x-[-15deg] " +
+    "before:bg-white/20 before:transition-transform before:duration-500 " +
+    "hover:before:translate-x-[110%]",
   secondary:
-    "border border-white/20 bg-glass-gradient text-white hover:border-accent/60 hover:text-white",
-  light: "bg-accent text-white hover:bg-accentDark",
+    "border border-white/20 bg-glass-gradient text-white hover:border-accent/60 hover:text-white " +
+    "relative overflow-hidden " +
+    "before:absolute before:inset-0 before:translate-x-[-110%] before:skew-x-[-15deg] " +
+    "before:bg-white/10 before:transition-transform before:duration-500 " +
+    "hover:before:translate-x-[110%]",
+  light:
+    "bg-accent text-white hover:bg-accentDark relative overflow-hidden " +
+    "before:absolute before:inset-0 before:translate-x-[-110%] before:skew-x-[-15deg] " +
+    "before:bg-white/20 before:transition-transform before:duration-500 " +
+    "hover:before:translate-x-[110%]",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -50,7 +62,11 @@ export function ActionButton({
   return (
     <button
       className={cn(
-        "inline-flex max-w-full items-center justify-center rounded-[4px] text-center font-space font-medium leading-[1.2] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
+        "inline-flex max-w-full items-center justify-center rounded-[4px] text-center font-space font-medium leading-[1.2]",
+        "transition-all duration-300 ease-out",
+        "hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(254,74,0,0.25)]",
+        "active:translate-y-0 active:scale-[0.98]",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
         variantClasses[variant],
         sizeClasses[size],
         className,

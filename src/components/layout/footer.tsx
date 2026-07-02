@@ -12,8 +12,13 @@ export function Footer() {
         </div>
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-6 font-space text-sm text-navMuted">
           {navigationItems.map((item) => (
-            <a className="transition hover:text-white" href={item.href} key={item.label}>
+            <a
+              className="relative transition-colors duration-300 hover:text-white group"
+              href={item.href}
+              key={item.label}
+            >
               {item.label}
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>

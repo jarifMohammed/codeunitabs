@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode, CSSProperties } from "react";
+import type { CSSProperties, ElementType, ReactNode } from "react";
 
 import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
@@ -15,7 +15,7 @@ type AnimateInProps = {
   className?: string;
   style?: CSSProperties;
   threshold?: number;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 };
 
 const animationMap: Record<AnimationType, { hidden: string; visible: string }> = {

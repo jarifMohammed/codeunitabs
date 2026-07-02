@@ -5,35 +5,24 @@ import { MessageSquare, Plus, X, Zap } from "lucide-react";
 
 import { faqs } from "@/constants/content";
 import { ActionButton } from "@/components/ui/action-button";
+import { AnimateIn } from "@/components/ui/animate-in";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState(0);
-  const { ref: headingRef, inView: headingInView } = useInView<HTMLDivElement>();
-  const { ref: contentRef, inView: contentInView } = useInView<HTMLDivElement>();
 
   return (
     <section className="bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="mx-auto max-w-design">
-        <div
-          ref={headingRef}
-          className={cn(
-            "mb-10 md:mb-16 transition-all duration-700 ease-out",
-            headingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-          )}
-        >
+        <AnimateIn type="fade-up" className="mb-10 md:mb-16">
           <SectionHeading
             icon={Zap}
             tag="FAQ"
             title="Fequently asked questions"
           />
-        </div>
-        <div
-          ref={contentRef}
-          className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] 2xl:grid-cols-[minmax(0,1071px)_1fr]"
-        >
+        </AnimateIn>
+        <AnimateIn type="fade-up" delay={120} className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] 2xl:grid-cols-[minmax(0,1071px)_1fr]">
           <div className="flex flex-col gap-[15px]">
             {faqs.map((faq, index) => {
               const isOpen = index === openIndex;
@@ -47,10 +36,8 @@ export function FaqSection() {
                     isOpen
                       ? "min-h-36 sm:min-h-40 border-accent/30 shadow-[0_4px_20px_rgba(254,74,0,0.06)]"
                       : "min-h-[68px] sm:min-h-[74px] hover:border-white/20",
-                    contentInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
                   )}
                   key={faq.question}
-                  style={{ transitionDelay: contentInView ? `${index * 60}ms` : "0ms" }}
                 >
                   <button
                     aria-expanded={isOpen}
@@ -95,9 +82,7 @@ export function FaqSection() {
             className={cn(
               "relative flex min-h-[390px] flex-col items-center justify-between overflow-hidden rounded-[10px] border border-borderStrong bg-sectionCard px-5 pb-6 pt-12 text-center sm:min-h-[512px] sm:px-8 sm:pb-8 sm:pt-[72px]",
               "transition-all duration-700 ease-out",
-              contentInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8",
             )}
-            style={{ transitionDelay: contentInView ? "300ms" : "0ms" }}
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(254,74,0,0.16),transparent_42%)]" />
             <MessageSquare aria-hidden="true" className="relative size-[67px] fill-white text-white animate-float-y" />
@@ -116,7 +101,7 @@ export function FaqSection() {
               </ActionButton>
             </div>
           </aside>
-        </div>
+        </AnimateIn>
       </div>
     </section>
   );

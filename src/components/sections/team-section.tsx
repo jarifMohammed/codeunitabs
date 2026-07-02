@@ -5,7 +5,7 @@ import { Heart, Target, Zap } from "lucide-react";
 
 import { imageAssets } from "@/constants/assets";
 import { SectionTag } from "@/components/ui/section-tag";
-import { useInView } from "@/hooks/use-in-view";
+import { AnimateIn } from "@/components/ui/animate-in";
 import { cn } from "@/utils/cn";
 
 const valueCards = [
@@ -22,21 +22,10 @@ const valueCards = [
 ];
 
 export function TeamSection() {
-  const { ref: leftRef, inView: leftInView } = useInView<HTMLDivElement>();
-  const { ref: rightRef, inView: rightInView } = useInView<HTMLDivElement>();
-
   return (
     <section className="border-y border-borderStrong bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="mx-auto grid max-w-design gap-10 md:gap-[72px] xl:grid-cols-[1fr_1.1fr]">
-        {/* Left: slide in from left */}
-        <div
-          ref={leftRef}
-          className={cn(
-            "flex min-h-0 flex-col justify-center gap-6 xl:min-h-[463px]",
-            "transition-all duration-700 ease-out",
-            leftInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10",
-          )}
-        >
+        <AnimateIn type="slide-left" className="flex min-h-0 flex-col justify-center gap-6 xl:min-h-[463px]">
           <SectionTag icon={Zap} label="Who we are" />
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
@@ -51,16 +40,15 @@ export function TeamSection() {
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {valueCards.map(({ title, description, icon: Icon }, i) => (
+              {valueCards.map(({ title, description, icon: Icon }) => (
                 <article
                   className={cn(
                     "relative overflow-hidden rounded-xl border border-white/10 bg-sectionCard p-[17px]",
                     "transition-all duration-500 ease-out",
                     "hover:border-accent/30 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(254,74,0,0.08)]",
-                    leftInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
+                    "opacity-100 translate-y-0",
                   )}
                   key={title}
-                  style={{ transitionDelay: leftInView ? `${200 + i * 100}ms` : "0ms" }}
                 >
                   <div className="absolute right-[-101px] top-[-100px] size-[200px] rounded-full bg-accent/20 blur-[15px]" />
                   <Icon aria-hidden="true" className="mb-3 size-4 text-accent" />
@@ -74,18 +62,9 @@ export function TeamSection() {
               ))}
             </div>
           </div>
-        </div>
+        </AnimateIn>
 
-        {/* Right: slide in from right */}
-        <div
-          ref={rightRef}
-          className={cn(
-            "relative min-h-[340px] overflow-hidden rounded-2xl border border-white/10 sm:min-h-[420px] xl:min-h-[463px]",
-            "transition-all duration-700 ease-out",
-            rightInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10",
-          )}
-          style={{ transitionDelay: rightInView ? "100ms" : "0ms" }}
-        >
+        <AnimateIn type="slide-right" delay={120} className="relative min-h-[340px] overflow-hidden rounded-2xl border border-white/10 sm:min-h-[420px] xl:min-h-[463px]">
           <Image
             alt="Darken remote team collaborating around laptops"
             className="object-cover transition-transform duration-700 hover:scale-[1.03]"
@@ -104,7 +83,7 @@ export function TeamSection() {
               <span className="font-inter text-xs leading-4 text-[#fafafa]">Available for projects</span>
             </div>
           </div>
-        </div>
+        </AnimateIn>
       </div>
     </section>
   );

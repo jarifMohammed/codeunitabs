@@ -1,39 +1,31 @@
 "use client";
 
 import Image from "next/image";
+import { AnimateIn } from "@/components/ui/animate-in";
 import { Zap } from "lucide-react";
 
 import { imageAssets } from "@/constants/assets";
 import { testimonials } from "@/constants/content";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
 
 export function TestimonialsSection() {
-  const { ref: headingRef, inView: headingInView } = useInView<HTMLDivElement>();
-
   // Duplicate for infinite scroll illusion
   const allTestimonials = [...testimonials, ...testimonials];
 
   return (
     <section className="overflow-hidden bg-bg py-20 md:py-24 xl:py-[120px]" id="insights">
-      <div
-        ref={headingRef}
-        className={cn(
-          "mb-10 md:mb-16 transition-all duration-700 ease-out",
-          headingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-        )}
-      >
+      <AnimateIn type="fade-up" className="mb-10 md:mb-16">
         <SectionHeading
           description="Real experiences from businesses and startups we've helped through modern digital solutions."
           icon={Zap}
           tag="TESTIMONIALS"
           title="What Our Clients Say"
         />
-      </div>
+      </AnimateIn>
 
       {/* Marquee container */}
-      <div className="relative">
+      <AnimateIn type="fade-up" delay={120} className="relative">
         {/* Left/right edge fade masks */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-bg to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-bg to-transparent" />
@@ -95,7 +87,7 @@ export function TestimonialsSection() {
             </article>
           ))}
         </div>
-      </div>
+      </AnimateIn>
     </section>
   );
 }

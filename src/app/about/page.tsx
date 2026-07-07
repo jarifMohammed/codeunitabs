@@ -105,7 +105,7 @@ const caseStudies = [
 
 function AboutHero() {
   return (
-    <section className="relative min-h-[680px] overflow-hidden bg-bg px-4 pb-0 pt-[140px] sm:min-h-[760px] sm:px-8 sm:pt-[170px] lg:px-12 xl:min-h-[828px] xl:px-16 xl:pt-[189px] 2xl:px-[120px] min-[1800px]:px-[200px]">
+    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="absolute inset-x-0 top-0 h-[680px] sm:h-[760px] xl:h-[828px]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(254,74,0,0.13),transparent_52%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.08),transparent_22%,transparent_72%,rgba(255,255,255,0.08))] opacity-60" />
@@ -120,8 +120,7 @@ function AboutHero() {
               with <span className="text-accent">Data-Driven Insights</span>
             </h1>
             <p className="mx-auto max-w-[1200px] font-montserrat text-base font-semibold leading-[1.35] text-white/60 sm:text-lg md:text-xl md:leading-[1.2]">
-              Founded by data experts, we create cutting-edge SaaS analytics platforms tailored for
-              businesses of all sizes.
+              We build the software your business runs on.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-[9px]">
@@ -247,7 +246,6 @@ function CapabilitiesPanel() {
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Crafting Powerful Solutions
             </h2>
-            <ActionButton actionName="bookDemo">View More</ActionButton>
           </div>
         </div>
         <div className="grid overflow-hidden border border-white/[0.05] bg-card/60 xl:grid-cols-[500px_1fr]">
@@ -351,7 +349,6 @@ function CaseStudiesSection() {
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold capitalize leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Recent case studies
             </h2>
-            <ActionButton actionName="bookDemo">View More</ActionButton>
           </div>
         </div>
         <div className="grid gap-12 xl:grid-cols-2">

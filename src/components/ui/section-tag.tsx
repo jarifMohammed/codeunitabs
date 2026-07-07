@@ -7,9 +7,8 @@ type SectionTagProps = {
 
 export function SectionTag({ label, icon: Icon }: SectionTagProps) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-glass-gradient px-3 py-2.5 text-white sm:px-4 sm:py-3">
-      <Icon aria-hidden="true" className="size-4 text-accent sm:size-5" strokeWidth={2} />
-      <span className="font-inter text-sm leading-[1.2] sm:text-base">{label}</span>
+    <div className="inline-flex items-center justify-center rounded-[6px] border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md shadow-[0_2px_12px_rgba(255,255,255,0.05)] sm:px-5 sm:py-2">
+      <span className="text-xs font-bold uppercase tracking-widest text-white sm:text-sm">{label}</span>
     </div>
   );
 }

@@ -58,7 +58,7 @@ export const features: FeatureCard[] = [
     variant: "support",
   },
   {
-    title: "Saves You Time",
+    title: "Our Process",
     description: "Streamlined workflow from idea to launch.",
     icon: BarChart3,
     variant: "workflow",
@@ -81,9 +81,9 @@ export const workflowSteps = [
 ];
 
 export const supportItems = [
-  { title: "Ongoing Support", description: "24/7 expert assistance" },
-  { title: "Regular Updates", description: "Always up to date" },
-  { title: "Scalable Solutions", description: "Built to grow with you" },
+  { title: "Continuous Support", description: "24/7 expert assistance", icon: Headphones },
+  { title: "Regular Updates", description: "Always up to date", icon: TrendingUp },
+  { title: "Scalable Solutions", description: "Built to grow with you", icon: Layers3 },
 ];
 
 export const testimonials: Testimonial[] = [

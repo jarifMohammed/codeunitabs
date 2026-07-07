@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Zap } from "lucide-react";
 
 import { features, serviceTags, supportItems, workflowSteps } from "@/constants/content";
@@ -8,116 +9,30 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
 
-function FeatureVisual({ variant }: Pick<FeatureCard, "variant">) {
-  if (variant === "chart") {
-    return (
-      <div className="flex h-full flex-col gap-6">
-        <div className="relative h-[150px] rounded-xl border border-white/[0.06] bg-black/40 p-[17px]">
-          <div className="flex justify-between font-inter text-xs leading-4">
-            <span className="text-textMuted">Conversions</span>
-            <span className="text-accentDark">+148%</span>
-          </div>
-          <svg aria-hidden="true" className="mt-3 h-[88px] w-full" viewBox="0 0 816 88">
-            <defs>
-              <linearGradient id="chart-fill" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0" stopColor="#FE4A00" stopOpacity="0.6" />
-                <stop offset="1" stopColor="#FE4A00" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path
-              className="animate-[fadeInUp_1.2s_ease-out_0.3s_both]"
-              d="M0 76 C80 62 80 52 160 42 C240 48 240 47 320 30 C410 34 430 32 520 20 C620 23 620 24 700 10 C760 6 790 4 816 0 L816 88 L0 88 Z"
-              fill="url(#chart-fill)"
-            />
-            <path
-              className="animate-[fadeInUp_1.2s_ease-out_0.5s_both]"
-              d="M0 76 C80 62 80 52 160 42 C240 48 240 47 320 30 C410 34 430 32 520 20 C620 23 620 24 700 10 C760 6 790 4 816 0"
-              fill="none"
-              stroke="#FE4A00"
-              strokeLinecap="round"
-              strokeWidth="4"
-            />
-          </svg>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {["Higher Conversion", "Better Engagement", "Measurable Growth"].map((label, index) => (
-            <span
-              className={cn(
-                "rounded-full border px-[13px] pb-[5.5px] pt-[4.5px] font-inter text-xs leading-4",
-                "transition-all duration-300 hover:scale-105 cursor-default",
-                index === 0
-                  ? "border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent/50"
-                  : "border-white/10 bg-[#27272a]/50 text-[#fafafa] hover:border-white/20",
-              )}
-              key={label}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
-      </div>
-    );
-  }
+function WorkflowVisual() {
+  const [progress, setProgress] = useState(0);
 
-  if (variant === "orbit") {
-    return (
-      <div className="relative grid h-[200px] place-items-center">
-        {/* Spinning orbit rings */}
-        <div className="absolute size-[180px] rounded-full border border-dashed border-accent/20 animate-orbit-spin" style={{ animationDirection: "normal" }} />
-        <div className="absolute size-[120px] rounded-full border border-dashed border-accent/15 animate-orbit-spin" style={{ animationDirection: "reverse", animationDuration: "8s" }} />
-        {serviceTags.map(({ label, icon: Icon }, index) => (
-          <div
-            className={cn(
-              "absolute inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-[#140a05]/90 px-[11px] py-[5px] font-inter text-xs leading-4 text-[#fafafa]",
-              "transition-all duration-300 hover:border-accent/60 hover:bg-accent/10 hover:scale-105 cursor-default",
-              [
-                "left-[13%] top-[5%]",
-                "right-[5%] top-[26%]",
-                "bottom-[20%] right-[6%]",
-                "bottom-[10%] left-[14%]",
-                "left-[5%] top-[40%]",
-              ][index],
-            )}
-            key={label}
-          >
-            <Icon aria-hidden="true" className="size-3 text-accent" />
-            {label}
-          </div>
-        ))}
-        <div className="grid size-14 place-items-center rounded-full bg-accent text-white shadow-glow animate-pulse-glow">
-          <Zap aria-hidden="true" className="size-6" />
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    let animationFrame: number;
+    let start: number | null = null;
+    const duration = 6000;
 
-  if (variant === "support") {
-    return (
-      <div className="flex flex-col gap-2">
-        {supportItems.map((item, i) => (
-          <div
-            className="flex items-center gap-3 rounded-xl border border-accent/20 bg-black/50 p-[13px] backdrop-blur transition-all duration-300 hover:border-accent/40 hover:bg-black/70 hover:-translate-y-0.5"
-            key={item.title}
-            style={{ animationDelay: `${i * 80}ms` }}
-          >
-            <div className="grid size-8 place-items-center rounded-lg bg-accent/15 text-accent transition-all duration-300 hover:bg-accent/25">
-              <Zap aria-hidden="true" className="size-4" />
-            </div>
-            <div className="flex-1">
-              <p className="font-inter text-sm leading-[1.2] text-[#fafafa]">{item.title}</p>
-              <p className="font-inter text-xs leading-[1.2] text-textMuted">{item.description}</p>
-            </div>
-            <span className="size-2 rounded-full bg-accent shadow-[0_0_8px_#fe4a00] animate-dot-pulse" />
-          </div>
-        ))}
-      </div>
-    );
-  }
+    function animate(timestamp: number) {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const currentProgress = ((elapsed % duration) / duration) * (workflowSteps.length - 0.5);
+      setProgress(currentProgress);
+      animationFrame = requestAnimationFrame(animate);
+    }
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
 
   return (
     <div className="flex h-40 items-center justify-between gap-2 px-0 sm:px-2">
       {workflowSteps.map(({ label, icon: Icon }, index) => {
-        const active = index < 2;
+        const active = progress >= index;
+        const lineProgress = Math.max(0, Math.min(1, progress - index));
         return (
           <div className="contents" key={label}>
             <div className="flex flex-col items-center gap-2 group">
@@ -125,33 +40,192 @@ function FeatureVisual({ variant }: Pick<FeatureCard, "variant">) {
                 className={cn(
                   "grid size-12 place-items-center rounded-full border transition-all duration-300",
                   active
-                    ? "border-accent/40 bg-accent text-white shadow-[0_0_16px_rgba(254,74,0,0.4)] group-hover:shadow-[0_0_24px_rgba(254,74,0,0.6)] group-hover:scale-110"
-                    : "border-white/10 bg-white/[0.05] text-textMuted group-hover:border-white/20 group-hover:scale-105",
+                    ? "border-accent/40 bg-accent text-white shadow-[0_0_16px_rgba(254,74,0,0.4)] scale-110"
+                    : "border-white/10 bg-white/[0.05] text-textMuted scale-100",
                 )}
               >
-                <Icon aria-hidden="true" className="size-5" />
+                <Icon aria-hidden="true" className="size-5 transition-all duration-300" />
               </div>
-              <span className={cn("text-center font-inter text-[11px] leading-4 sm:text-xs", active ? "text-white" : "text-textMuted")}>
+              <span className={cn("text-center font-inter text-[11px] leading-4 sm:text-xs transition-colors duration-300", active ? "text-white" : "text-textMuted")}>
                 {label}
               </span>
             </div>
             {index < workflowSteps.length - 1 ? (
-              <div
-                className={cn(
-                  "mx-2 h-0.5 flex-1",
-                  index === 0
-                    ? "bg-gradient-to-r from-accent to-accent/60 shadow-[0_0_8px_rgba(254,74,0,0.5)]"
-                    : index === 1
-                      ? "bg-gradient-to-r from-accent/60 to-accent/30"
-                      : "bg-white/10",
-                )}
-              />
+              <div className="relative mx-2 h-0.5 flex-1 bg-white/10 overflow-hidden">
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-accent to-accent/30 shadow-[0_0_8px_rgba(254,74,0,0.5)]"
+                  style={{ transform: `translateX(${-100 + lineProgress * 100}%)` }}
+                />
+              </div>
             ) : null}
           </div>
         );
       })}
     </div>
   );
+}
+
+function ChartVisual() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let animationFrame: number;
+    let start: number | null = null;
+    const duration = 12000; // 12s per cycle
+
+    function animate(timestamp: number) {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      
+      const cycle = Math.floor(elapsed / duration) % 3;
+      setActiveIndex(cycle);
+      
+      const currentCycleElapsed = elapsed % duration;
+      const growDuration = duration * 0.80; // Draw over 80% of the cycle, hold for 20%
+      const currentProgress = Math.min(currentCycleElapsed / growDuration, 1);
+      setProgress(currentProgress);
+      
+      animationFrame = requestAnimationFrame(animate);
+    }
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
+  const stats = [
+    { label: "Higher Conversion", metric: "Conversions", value: "+148%" },
+    { label: "Better Engagement", metric: "Engagement", value: "+210%" },
+    { label: "Measurable Growth", metric: "Growth", value: "+340%" },
+  ];
+
+  const graphPaths = [
+    "M0 76 C80 62 80 52 160 42 C240 48 240 47 320 30 C410 34 430 32 520 20 C620 23 620 24 700 10 C760 6 790 4 816 0",
+    "M0 60 C80 80 80 40 160 50 C240 60 240 20 320 30 C410 40 430 15 520 25 C620 35 620 10 700 15 C760 20 790 5 816 10",
+    "M0 80 C80 80 80 75 160 70 C240 65 240 55 320 50 C410 45 430 30 520 25 C620 20 620 15 700 5 C760 0 790 0 816 0",
+  ];
+
+  return (
+    <div className="flex h-full flex-col gap-6">
+      <div className="relative h-[150px] rounded-xl border border-white/[0.06] bg-black/40 p-[17px]">
+        <div className="flex justify-between font-inter text-xs leading-4">
+          <span className="text-textMuted transition-all duration-500">{stats[activeIndex].metric}</span>
+          <span className="text-accentDark transition-all duration-500">{stats[activeIndex].value}</span>
+        </div>
+        <svg aria-hidden="true" className="mt-3 h-[88px] w-full" viewBox="0 0 816 88">
+          <defs>
+            <linearGradient id="chart-fill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor="#FE4A00" stopOpacity="0.6" />
+              <stop offset="1" stopColor="#FE4A00" stopOpacity="0" />
+            </linearGradient>
+            <clipPath id="grow-clip">
+              <rect x="0" y="0" height="100%" width={`${progress * 100}%`} />
+            </clipPath>
+          </defs>
+          <g clipPath="url(#grow-clip)">
+            <path
+              d={`${graphPaths[activeIndex]} L816 88 L0 88 Z`}
+              fill="url(#chart-fill)"
+            />
+            <path
+              d={graphPaths[activeIndex]}
+              fill="none"
+              stroke="#FE4A00"
+              strokeLinecap="round"
+              strokeWidth="4"
+            />
+          </g>
+        </svg>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {stats.map(({ label }, index) => {
+          const active = index === activeIndex;
+          return (
+            <span
+              className={cn(
+                "rounded-full border px-[13px] pb-[5.5px] pt-[4.5px] font-inter text-xs leading-4",
+                "transition-all duration-500 cursor-default",
+                active
+                  ? "border-accent/40 bg-accent/20 text-accent scale-105 shadow-[0_0_12px_rgba(254,74,0,0.25)]"
+                  : "border-white/10 bg-[#27272a]/50 text-[#fafafa] scale-100 hover:border-white/20",
+              )}
+              key={label}
+            >
+              {label}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function OrbitVisual() {
+  const positions = [
+    "left-[13%] top-[8%]",
+    "right-[4%] top-[22%]",
+    "bottom-[18%] right-[8%]",
+    "bottom-[8%] left-[12%]",
+    "left-[4%] top-[44%]",
+  ];
+
+  return (
+    <div className="relative h-[200px] w-full overflow-hidden">
+      {/* Orbit rings */}
+      <div className="absolute left-1/2 top-1/2 size-[174px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-accent/20" />
+      <div className="absolute left-1/2 top-1/2 size-[116px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-accent/10" />
+
+      {serviceTags.map(({ label, icon: Icon }, index) => (
+        <div
+          key={label}
+          className={cn(
+            "absolute inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-[#140a05]/95 px-[11px] py-[5px] font-inter text-xs leading-4 text-[#fafafa] shadow-[0_2px_12px_rgba(0,0,0,0.6)] cursor-default hover:border-accent/60 hover:bg-accent/10 transition-colors duration-300",
+            positions[index],
+          )}
+        >
+          <Icon aria-hidden="true" className="size-3 text-accent" />
+          {label}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function FeatureVisual({ variant }: Pick<FeatureCard, "variant">) {
+  if (variant === "chart") {
+    return <ChartVisual />;
+  }
+
+  if (variant === "orbit") {
+    return <OrbitVisual />;
+  }
+
+  if (variant === "support") {
+    return (
+      <div className="flex flex-col gap-2">
+        {supportItems.map((item: any, i) => {
+          const Icon = item.icon || Zap;
+          return (
+            <div
+              className="flex items-center gap-3 rounded-xl border border-accent/20 bg-black/50 p-[13px] backdrop-blur transition-all duration-300 hover:border-accent/40 hover:bg-black/70 hover:-translate-y-0.5"
+              key={item.title}
+              style={{ animationDelay: `${i * 80}ms` }}
+            >
+              <div className="grid size-8 place-items-center rounded-lg bg-accent/15 text-accent transition-all duration-300 hover:bg-accent/25">
+                <Icon aria-hidden="true" className="size-4" />
+              </div>
+              <div className="flex-1">
+                <p className="font-inter text-sm leading-[1.2] text-[#fafafa]">{item.title}</p>
+                <p className="font-inter text-xs leading-[1.2] text-textMuted">{item.description}</p>
+              </div>
+              <span className="size-2 rounded-full bg-accent shadow-[0_0_8px_#fe4a00] animate-dot-pulse" />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return <WorkflowVisual />;
 }
 
 function AnimatedFeatureCard({ feature, className, delay = 0 }: { feature: FeatureCard; className?: string; delay?: number }) {

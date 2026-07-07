@@ -9,14 +9,11 @@ import { SectionTag } from "@/components/ui/section-tag";
 export function HeroSection() {
   return (
     <section
-      className="relative min-h-[680px] overflow-hidden bg-bg px-4 pb-0 pt-[140px] sm:min-h-[760px] sm:px-8 sm:pt-[170px] lg:px-12 xl:min-h-[828px] xl:px-16 xl:pt-[189px] 2xl:px-[68px] min-[1800px]:px-0"
+      className="relative flex min-h-[80vh] flex-col items-center justify-center overflow-hidden bg-bg px-4 pb-24 pt-28 sm:px-8 lg:px-12 xl:px-16 2xl:px-[68px] min-[1800px]:px-0"
       id="about"
     >
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-6 text-center">
         <div className="flex flex-col items-center gap-8 sm:gap-12">
-          <AnimateIn type="fade-down" delay={100} className="w-full">
-            <SectionTag icon={Zap} label="About us" />
-          </AnimateIn>
           <div className="flex flex-col items-center gap-3">
             <AnimateIn type="fade-up" delay={250} className="w-full">
               <h1
@@ -28,21 +25,27 @@ export function HeroSection() {
             </AnimateIn>
             <AnimateIn type="fade-up" delay={420} className="w-full">
               <p className="max-w-[1050px] font-space text-base font-semibold leading-[1.35] text-white/60 sm:text-lg md:text-xl md:leading-[1.2]">
-                Founded by data experts, we create cutting-edge SaaS analytics platforms tailored for
-                businesses of all sizes.
+                We build the software your business runs on.
               </p>
             </AnimateIn>
           </div>
         </div>
         <AnimateIn type="scale-in" delay={600} className="flex flex-wrap items-center justify-center gap-[9px] pt-0">
-          <ActionButton actionName="downloadApp">Download app</ActionButton>
           <ActionButton actionName="bookDemo" variant="secondary">
             Talk to sales
           </ActionButton>
         </AnimateIn>
       </div>
 
-      {/* Horizon image: float animation */}
+      {/* Scroll hint */}
+      <AnimateIn type="fade" delay={900} className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5">
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-white/30">Scroll</span>
+        <div className="flex h-8 w-5 items-start justify-center rounded-full border border-white/20 p-1">
+          <div className="h-1.5 w-1 animate-bounce rounded-full bg-accent" />
+        </div>
+      </AnimateIn>
+
+      {/* Horizon image */}
       <AnimateIn type="fade" delay={760} className="absolute inset-x-0 bottom-[-48px] h-[280px] sm:bottom-[-64px] sm:h-[360px]">
         <Image
           alt=""

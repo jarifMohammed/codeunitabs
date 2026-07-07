@@ -17,21 +17,11 @@ type ActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-accent text-white hover:bg-accentDark relative overflow-hidden " +
-    "before:absolute before:inset-0 before:translate-x-[-110%] before:skew-x-[-15deg] " +
-    "before:bg-white/20 before:transition-transform before:duration-500 " +
-    "hover:before:translate-x-[110%]",
+    "bg-accent text-white shadow-[0_4px_14px_0_rgba(254,74,0,0.39)] hover:shadow-[0_6px_20px_rgba(254,74,0,0.4)] hover:bg-accentSoft border border-accentSoft/50",
   secondary:
-    "border border-white/20 bg-glass-gradient text-white hover:border-accent/60 hover:text-white " +
-    "relative overflow-hidden " +
-    "before:absolute before:inset-0 before:translate-x-[-110%] before:skew-x-[-15deg] " +
-    "before:bg-white/10 before:transition-transform before:duration-500 " +
-    "hover:before:translate-x-[110%]",
+    "bg-transparent text-white border border-white/20 backdrop-blur-md hover:bg-white/10 hover:border-white/40 hover:shadow-[0_4px_14px_0_rgba(255,255,255,0.05)]",
   light:
-    "bg-accent text-white hover:bg-accentDark relative overflow-hidden " +
-    "before:absolute before:inset-0 before:translate-x-[-110%] before:skew-x-[-15deg] " +
-    "before:bg-white/20 before:transition-transform before:duration-500 " +
-    "hover:before:translate-x-[110%]",
+    "bg-white text-bg border border-transparent shadow-[0_4px_14px_0_rgba(255,255,255,0.39)] hover:bg-white/90 hover:shadow-[0_6px_20px_rgba(255,255,255,0.4)]",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -62,9 +52,9 @@ export function ActionButton({
   return (
     <button
       className={cn(
-        "inline-flex max-w-full items-center justify-center rounded-[4px] text-center font-space font-medium leading-[1.2]",
+        "inline-flex max-w-full items-center justify-center rounded-lg text-center font-semibold tracking-wide",
         "transition-all duration-300 ease-out",
-        "hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(254,74,0,0.25)]",
+        "hover:-translate-y-0.5",
         "active:translate-y-0 active:scale-[0.98]",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
         variantClasses[variant],

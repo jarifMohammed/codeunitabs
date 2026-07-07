@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Zap } from "lucide-react";
 
 import { imageAssets } from "@/constants/assets";
-import { ActionButton } from "@/components/ui/action-button";
 import { SectionTag } from "@/components/ui/section-tag";
 import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
@@ -111,7 +110,6 @@ export function CapabilitiesSection() {
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Crafting Powerful Solutions
             </h2>
-            <ActionButton actionName="bookDemo">View More</ActionButton>
           </div>
         </div>
 

@@ -18,10 +18,10 @@ const config: Config = {
         navMuted: "#8C8C9A",
       },
       fontFamily: {
-        inter: ["var(--font-inter)", "Inter", "sans-serif"],
+        inter: ["var(--font-montserrat)", "Montserrat", "sans-serif"],
         montserrat: ["var(--font-montserrat)", "Montserrat", "sans-serif"],
-        space: ["var(--font-space-grotesk)", "Space Grotesk", "sans-serif"],
-        manrope: ["var(--font-manrope)", "Manrope", "sans-serif"],
+        space: ["var(--font-montserrat)", "Montserrat", "sans-serif"],
+        manrope: ["var(--font-montserrat)", "Montserrat", "sans-serif"],
       },
       boxShadow: {
         card: "0px 8px 32px 0px rgba(0,0,0,0.4)",

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Zap } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 
 import { features, serviceTags, supportItems, workflowSteps } from "@/constants/content";
 import type { FeatureCard } from "@/types/content";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/utils/cn";
 
 function WorkflowVisual() {
@@ -35,13 +35,17 @@ function WorkflowVisual() {
         const lineProgress = Math.max(0, Math.min(1, progress - index));
         return (
           <div className="contents" key={label}>
-            <div className="flex flex-col items-center gap-2 group">
+            <motion.div
+              className="flex flex-col items-center gap-2 group"
+              animate={{ scale: active ? 1.1 : 1 }}
+              transition={{ duration: 0.3 }}
+            >
               <div
                 className={cn(
                   "grid size-12 place-items-center rounded-full border transition-all duration-300",
                   active
-                    ? "border-accent/40 bg-accent text-white shadow-[0_0_16px_rgba(254,74,0,0.4)] scale-110"
-                    : "border-white/10 bg-white/[0.05] text-textMuted scale-100",
+                    ? "border-accent/40 bg-accent text-white shadow-[0_0_16px_rgba(254,74,0,0.4)]"
+                    : "border-white/10 bg-white/[0.05] text-textMuted",
                 )}
               >
                 <Icon aria-hidden="true" className="size-5 transition-all duration-300" />
@@ -49,7 +53,7 @@ function WorkflowVisual() {
               <span className={cn("text-center font-inter text-[11px] leading-4 sm:text-xs transition-colors duration-300", active ? "text-white" : "text-textMuted")}>
                 {label}
               </span>
-            </div>
+            </motion.div>
             {index < workflowSteps.length - 1 ? (
               <div className="relative mx-2 h-0.5 flex-1 bg-white/10 overflow-hidden">
                 <div
@@ -72,20 +76,20 @@ function ChartVisual() {
   useEffect(() => {
     let animationFrame: number;
     let start: number | null = null;
-    const duration = 12000; // 12s per cycle
+    const duration = 12000;
 
     function animate(timestamp: number) {
       if (!start) start = timestamp;
       const elapsed = timestamp - start;
-      
+
       const cycle = Math.floor(elapsed / duration) % 3;
       setActiveIndex(cycle);
-      
+
       const currentCycleElapsed = elapsed % duration;
-      const growDuration = duration * 0.80; // Draw over 80% of the cycle, hold for 20%
+      const growDuration = duration * 0.80;
       const currentProgress = Math.min(currentCycleElapsed / growDuration, 1);
       setProgress(currentProgress);
-      
+
       animationFrame = requestAnimationFrame(animate);
     }
     animationFrame = requestAnimationFrame(animate);
@@ -108,8 +112,24 @@ function ChartVisual() {
     <div className="flex h-full flex-col gap-6">
       <div className="relative h-[150px] rounded-xl border border-white/[0.06] bg-black/40 p-[17px]">
         <div className="flex justify-between font-inter text-xs leading-4">
-          <span className="text-textMuted transition-all duration-500">{stats[activeIndex].metric}</span>
-          <span className="text-accentDark transition-all duration-500">{stats[activeIndex].value}</span>
+          <motion.span
+            className="text-textMuted"
+            key={activeIndex}
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {stats[activeIndex].metric}
+          </motion.span>
+          <motion.span
+            className="text-accentDark"
+            key={`value-${activeIndex}`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {stats[activeIndex].value}
+          </motion.span>
         </div>
         <svg aria-hidden="true" className="mt-3 h-[88px] w-full" viewBox="0 0 816 88">
           <defs>
@@ -140,18 +160,20 @@ function ChartVisual() {
         {stats.map(({ label }, index) => {
           const active = index === activeIndex;
           return (
-            <span
+            <motion.span
               className={cn(
                 "rounded-full border px-[13px] pb-[5.5px] pt-[4.5px] font-inter text-xs leading-4",
-                "transition-all duration-500 cursor-default",
+                "cursor-default",
                 active
-                  ? "border-accent/40 bg-accent/20 text-accent scale-105 shadow-[0_0_12px_rgba(254,74,0,0.25)]"
-                  : "border-white/10 bg-[#27272a]/50 text-[#fafafa] scale-100 hover:border-white/20",
+                  ? "border-accent/40 bg-accent/20 text-accent shadow-[0_0_12px_rgba(254,74,0,0.25)]"
+                  : "border-white/10 bg-[#27272a]/50 text-[#fafafa] hover:border-white/20",
               )}
               key={label}
+              animate={active ? { scale: 1.05 } : { scale: 1 }}
+              transition={{ duration: 0.3 }}
             >
               {label}
-            </span>
+            </motion.span>
           );
         })}
       </div>
@@ -170,21 +192,33 @@ function OrbitVisual() {
 
   return (
     <div className="relative h-[200px] w-full overflow-hidden">
-      {/* Orbit rings */}
-      <div className="absolute left-1/2 top-1/2 size-[174px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-accent/20" />
-      <div className="absolute left-1/2 top-1/2 size-[116px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-accent/10" />
+      <motion.div
+        className="absolute left-1/2 top-1/2 size-[174px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-accent/20"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 size-[116px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-accent/10"
+        animate={{ rotate: -360 }}
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+      />
 
       {serviceTags.map(({ label, icon: Icon }, index) => (
-        <div
+        <motion.div
           key={label}
           className={cn(
-            "absolute inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-[#140a05]/95 px-[11px] py-[5px] font-inter text-xs leading-4 text-[#fafafa] shadow-[0_2px_12px_rgba(0,0,0,0.6)] cursor-default hover:border-accent/60 hover:bg-accent/10 transition-colors duration-300",
+            "absolute inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-[#140a05]/95 px-[11px] py-[5px] font-inter text-xs leading-4 text-[#fafafa] shadow-[0_2px_12px_rgba(0,0,0,0.6)] cursor-default",
             positions[index],
           )}
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ borderColor: "rgba(254,74,0,0.6)", backgroundColor: "rgba(254,74,0,0.1)", y: -2 }}
         >
           <Icon aria-hidden="true" className="size-3 text-accent" />
           {label}
-        </div>
+        </motion.div>
       ))}
     </div>
   );
@@ -202,13 +236,17 @@ function FeatureVisual({ variant }: Pick<FeatureCard, "variant">) {
   if (variant === "support") {
     return (
       <div className="flex flex-col gap-2">
-        {supportItems.map((item: any, i) => {
+        {supportItems.map((item, i) => {
           const Icon = item.icon || Zap;
           return (
-            <div
-              className="flex items-center gap-3 rounded-xl border border-accent/20 bg-black/50 p-[13px] backdrop-blur transition-all duration-300 hover:border-accent/40 hover:bg-black/70 hover:-translate-y-0.5"
+            <motion.div
+              className="flex items-center gap-3 rounded-xl border border-accent/20 bg-black/50 p-[13px] backdrop-blur transition-all duration-300 hover:border-accent/40 hover:bg-black/70"
               key={item.title}
-              style={{ animationDelay: `${i * 80}ms` }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -2, transition: { duration: 0.2 } }}
             >
               <div className="grid size-8 place-items-center rounded-lg bg-accent/15 text-accent transition-all duration-300 hover:bg-accent/25">
                 <Icon aria-hidden="true" className="size-4" />
@@ -217,8 +255,12 @@ function FeatureVisual({ variant }: Pick<FeatureCard, "variant">) {
                 <p className="font-inter text-sm leading-[1.2] text-[#fafafa]">{item.title}</p>
                 <p className="font-inter text-xs leading-[1.2] text-textMuted">{item.description}</p>
               </div>
-              <span className="size-2 rounded-full bg-accent shadow-[0_0_8px_#fe4a00] animate-dot-pulse" />
-            </div>
+              <motion.span
+                className="size-2 rounded-full bg-accent shadow-[0_0_8px_#fe4a00]"
+                animate={{ opacity: [1, 0.4, 1], scale: [1, 0.7, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+              />
+            </motion.div>
           );
         })}
       </div>
@@ -230,19 +272,21 @@ function FeatureVisual({ variant }: Pick<FeatureCard, "variant">) {
 
 function AnimatedFeatureCard({ feature, className, delay = 0 }: { feature: FeatureCard; className?: string; delay?: number }) {
   const Icon = feature.icon;
-  const { ref, inView } = useInView<HTMLElement>();
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <article
+    <motion.article
       ref={ref}
       className={cn(
         "relative overflow-hidden rounded-xl border border-accent/25 bg-card/60 p-5 shadow-card backdrop-blur-[10px] sm:p-[25px]",
-        "transition-all duration-700 ease-out",
-        "hover:border-accent/50 hover:shadow-[0_8px_40px_rgba(254,74,0,0.12)] hover:-translate-y-1",
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+        "hover:border-accent/50 hover:shadow-[0_8px_40px_rgba(254,74,0,0.12)]",
         className,
       )}
-      style={{ transitionDelay: inView ? `${delay}ms` : "0ms" }}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -4, transition: { duration: 0.3 } }}
     >
       <div className="absolute right-[-50px] top-[-50px] size-[200px] rounded-full bg-accent/20 blur-[15px] transition-all duration-500 group-hover:bg-accent/30" />
       <div className="relative flex h-full flex-col gap-4">
@@ -259,30 +303,30 @@ function AnimatedFeatureCard({ feature, className, delay = 0 }: { feature: Featu
           <FeatureVisual variant={feature.variant} />
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 
 export function FeaturesSection() {
-  const { ref: headingRef, inView: headingInView } = useInView<HTMLDivElement>();
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
     <section className="bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]" id="case-studies">
       <div className="mx-auto max-w-design">
-        <div
-          ref={headingRef}
-          className={cn(
-            "mb-10 md:mb-16 transition-all duration-700 ease-out",
-            headingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-          )}
+        <motion.div
+          ref={ref}
+          className="mb-10 md:mb-16"
+          initial={{ opacity: 0, y: 32 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <SectionHeading
             description="Everything you need to launch a world-class product, from first sketch to scale."
-            icon={Zap}
             tag="Why choose us"
             title="Built for teams that ship fast"
           />
-        </div>
+        </motion.div>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-6 xl:flex-row">
             <AnimatedFeatureCard className="min-h-[300px] sm:min-h-[330px] xl:basis-[58%] 2xl:basis-auto 2xl:w-[900px]" delay={0} feature={features[0]} />

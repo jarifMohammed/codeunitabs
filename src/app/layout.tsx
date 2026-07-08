@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { CursorFollower } from "@/components/ui/cursor-follower";
+import { SmoothScrollProvider } from "@/components/shared/smooth-scroll";
+import { PageTransition } from "@/components/shared/page-transition";
 import { siteConfig } from "@/constants/site";
 import "@/styles/globals.css";
 
@@ -82,11 +84,15 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       lang="en"
     >
       <body className="bg-bg font-inter text-white antialiased">
-        <ScrollProgress />
-        <CursorFollower />
-        <Header />
-        {children}
-        <Footer />
+        <SmoothScrollProvider>
+          <ScrollProgress />
+          <CursorFollower />
+          <Header />
+          <PageTransition>
+            {children}
+          </PageTransition>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

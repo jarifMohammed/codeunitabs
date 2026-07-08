@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { imageAssets } from "@/constants/assets";
 import { SectionTag } from "@/components/ui/section-tag";
@@ -80,9 +80,25 @@ const capabilityPanels = [
   },
 ];
 
+const sidebarVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+  },
+};
+
+const sidebarItemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
 export function CapabilitiesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [contentKey, setContentKey] = useState(0);
   const activePanel = capabilityPanels[activeIndex];
 
   const { ref: headingRef, inView: headingInView } = useInView<HTMLDivElement>();
@@ -91,7 +107,6 @@ export function CapabilitiesSection() {
   function handleSelect(index: number) {
     if (index === activeIndex) return;
     setActiveIndex(index);
-    setContentKey((k) => k + 1);
   }
 
   return (
@@ -105,7 +120,7 @@ export function CapabilitiesSection() {
             headingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
           )}
         >
-          <SectionTag icon={Zap} label="CAPABILITIES" />
+          <SectionTag label="CAPABILITIES" />
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Crafting Powerful Solutions
@@ -122,13 +137,18 @@ export function CapabilitiesSection() {
           )}
           style={{ transitionDelay: panelInView ? "100ms" : "0ms" }}
         >
-          <aside className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px]">
+          <motion.aside
+            className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px]"
+            variants={sidebarVariants}
+            initial="hidden"
+            animate={panelInView ? "visible" : "hidden"}
+          >
             <nav aria-label="Capabilities" className="flex flex-col gap-3 sm:gap-4">
               {capabilityPanels.map((item, index) => {
                 const active = index === activeIndex;
 
                 return (
-                  <button
+                  <motion.button
                     aria-pressed={active}
                     className={cn(
                       "group relative flex w-full items-center overflow-hidden border-b pb-[9px] pt-2 text-left font-space text-lg leading-[1.2] transition duration-500 sm:text-xl lg:text-2xl",
@@ -141,6 +161,7 @@ export function CapabilitiesSection() {
                     onFocus={() => handleSelect(index)}
                     onMouseEnter={() => handleSelect(index)}
                     type="button"
+                    variants={sidebarItemVariants}
                   >
                     <span
                       className={cn(
@@ -156,11 +177,11 @@ export function CapabilitiesSection() {
                     >
                       {item.label}
                     </span>
-                  </button>
+                  </motion.button>
                 );
               })}
             </nav>
-          </aside>
+          </motion.aside>
 
           <article className="group relative flex min-h-[420px] items-end overflow-hidden sm:min-h-[500px] xl:min-h-[530px]">
             {capabilityPanels.map((panel, index) => (
@@ -179,42 +200,49 @@ export function CapabilitiesSection() {
             ))}
             <div className="absolute inset-0 bg-[#0b0b0b]/75 transition duration-700 group-hover:bg-[#0b0b0b]/70" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent opacity-60" />
-            <div
-              className="absolute bottom-0 left-0 h-1 bg-accent transition-all duration-700"
+            <motion.div
+              className="absolute bottom-0 left-0 h-1 bg-accent"
+              layout
+              transition={{ type: "spring", stiffness: 200, damping: 25 }}
               style={{ width: `${((activeIndex + 1) / capabilityPanels.length) * 100}%` }}
             />
 
-            <div
-              key={contentKey}
-              className="relative flex w-full flex-col gap-5 bg-gradient-to-b from-white/0 to-white/[0.01] p-5 backdrop-blur-[2px] sm:p-8 md:gap-[23px] md:p-12 animate-fade-in-up"
-              style={{ animationDuration: "0.45s" }}
-            >
-              <div className="flex items-center justify-between gap-4 sm:gap-6">
-                <h3 className="font-montserrat text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.2] text-[#f5f5f5] transition duration-500 sm:text-[clamp(2.4rem,4.2vw,3rem)]">
-                  {activePanel.title}
-                </h3>
-                <span className="hidden font-montserrat text-7xl font-bold leading-none text-white/[0.06] md:block">
-                  {String(activeIndex + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <p className="max-w-[850px] font-inter text-base leading-[1.35] text-[#f5f5f5]/60 transition duration-500 sm:text-xl md:text-2xl md:leading-[1.25]">
-                {activePanel.description}
-              </p>
-              <div className="flex flex-wrap gap-3 pt-2 sm:gap-4 md:pt-[17px]">
-                {activePanel.tags.map((tag, tagIndex) => (
-                  <span
-                    className="translate-y-0 border border-white/10 bg-title-gradient px-3 py-2 font-montserrat text-xs font-semibold capitalize leading-[1.2] tracking-[1px] text-bg shadow-[0_10px_35px_rgba(0,0,0,0.18)] transition-all duration-500 hover:scale-105 sm:px-[17px] sm:py-[9px] sm:text-sm md:text-base"
-                    key={tag}
-                    style={{
-                      transitionDelay: `${tagIndex * 45}ms`,
-                      animationDelay: `${tagIndex * 50 + 100}ms`,
-                    }}
-                  >
-                    {tag}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activePanel.title}
+                className="relative flex w-full flex-col gap-5 bg-gradient-to-b from-white/0 to-white/[0.01] p-5 backdrop-blur-[2px] sm:p-8 md:gap-[23px] md:p-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="flex items-center justify-between gap-4 sm:gap-6">
+                  <h3 className="font-montserrat text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.2] text-[#f5f5f5] transition duration-500 sm:text-[clamp(2.4rem,4.2vw,3rem)]">
+                    {activePanel.title}
+                  </h3>
+                  <span className="hidden font-montserrat text-7xl font-bold leading-none text-white/[0.06] md:block">
+                    {String(activeIndex + 1).padStart(2, "0")}
                   </span>
-                ))}
-              </div>
-            </div>
+                </div>
+                <p className="max-w-[850px] font-inter text-base leading-[1.35] text-[#f5f5f5]/60 transition duration-500 sm:text-xl md:text-2xl md:leading-[1.25]">
+                  {activePanel.description}
+                </p>
+                <div className="flex flex-wrap gap-3 pt-2 sm:gap-4 md:pt-[17px]">
+                  {activePanel.tags.map((tag, tagIndex) => (
+                    <motion.span
+                      className="border border-white/10 bg-title-gradient px-3 py-2 font-montserrat text-xs font-semibold capitalize leading-[1.2] tracking-[1px] text-bg shadow-[0_10px_35px_rgba(0,0,0,0.18)] sm:px-[17px] sm:py-[9px] sm:text-sm md:text-base"
+                      key={tag}
+                      initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: tagIndex * 0.05, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      {tag}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </article>
         </div>
       </div>

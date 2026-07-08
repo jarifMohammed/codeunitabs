@@ -1,9 +1,7 @@
 "use client";
 
-import type { CSSProperties, ElementType, ReactNode } from "react";
-
-import { useInView } from "@/hooks/use-in-view";
-import { cn } from "@/utils/cn";
+import type { ElementType, ReactNode } from "react";
+import { motion, type Variants } from "framer-motion";
 
 type AnimationType = "fade-up" | "fade-down" | "slide-left" | "slide-right" | "scale-in" | "fade";
 
@@ -13,35 +11,34 @@ type AnimateInProps = {
   delay?: number;
   duration?: number;
   className?: string;
-  style?: CSSProperties;
   threshold?: number;
   as?: ElementType;
 };
 
-const animationMap: Record<AnimationType, { hidden: string; visible: string }> = {
+const variants: Record<AnimationType, Variants> = {
   "fade-up": {
-    hidden: "opacity-0 translate-y-8",
-    visible: "opacity-100 translate-y-0",
+    hidden: { opacity: 0, y: 32 },
+    visible: { opacity: 1, y: 0 },
   },
   "fade-down": {
-    hidden: "opacity-0 -translate-y-6",
-    visible: "opacity-100 translate-y-0",
+    hidden: { opacity: 0, y: -24 },
+    visible: { opacity: 1, y: 0 },
   },
   "slide-left": {
-    hidden: "opacity-0 -translate-x-10",
-    visible: "opacity-100 translate-x-0",
+    hidden: { opacity: 0, x: -40 },
+    visible: { opacity: 1, x: 0 },
   },
   "slide-right": {
-    hidden: "opacity-0 translate-x-10",
-    visible: "opacity-100 translate-x-0",
+    hidden: { opacity: 0, x: 40 },
+    visible: { opacity: 1, x: 0 },
   },
   "scale-in": {
-    hidden: "opacity-0 scale-90",
-    visible: "opacity-100 scale-100",
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1 },
   },
-  "fade": {
-    hidden: "opacity-0",
-    visible: "opacity-100",
+  fade: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   },
 };
 
@@ -49,33 +46,27 @@ export function AnimateIn({
   children,
   type = "fade-up",
   delay = 0,
-  duration = 700,
+  duration = 0.7,
   className,
-  style,
   threshold = 0.12,
   as: Tag = "div",
 }: AnimateInProps) {
-  const { ref, inView } = useInView<HTMLElement>({ threshold });
-  const anim = animationMap[type];
-
-  const El = Tag as "div";
+  const MotionTag = motion[Tag as keyof typeof motion] as typeof motion.div;
 
   return (
-    <El
-      // @ts-expect-error - generic element ref
-      ref={ref}
-      className={cn(
-        "transition-all ease-out",
-        inView ? anim.visible : anim.hidden,
-        className,
-      )}
-      style={{
-        transitionDuration: `${duration}ms`,
-        transitionDelay: inView ? `${delay}ms` : "0ms",
-        ...style,
+    <MotionTag
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px", amount: threshold as 0.12 }}
+      variants={variants[type]}
+      transition={{
+        duration,
+        delay: delay / 1000,
+        ease: [0.22, 1, 0.36, 1],
       }}
     >
       {children}
-    </El>
+    </MotionTag>
   );
 }

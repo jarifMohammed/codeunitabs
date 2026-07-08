@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   Sparkles,
   Target,
-  Zap,
 } from "lucide-react";
 
 import { FaqSection, TestimonialsSection, TrustSection } from "@/components/sections";
@@ -113,7 +112,7 @@ function AboutHero() {
 
       <div className="relative z-10 mx-auto flex max-w-design flex-col items-center gap-8 text-center sm:gap-12">
         <div className="flex max-w-[1400px] flex-col items-center gap-8 sm:gap-12">
-          <SectionTag icon={Zap} label="About us" />
+          <SectionTag label="About us" />
           <div className="flex flex-col gap-3">
             <h1 className="font-montserrat text-[clamp(2.45rem,11vw,4.5rem)] font-bold capitalize leading-[1.2] text-white sm:text-[clamp(3rem,7.5vw,4.5rem)]">
               Empowering Your Business <br className="hidden md:block" />
@@ -151,7 +150,7 @@ function StorySection() {
     <section className="border-t border-borderStrong bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="mx-auto grid max-w-design items-center gap-10 md:gap-[72px] xl:grid-cols-2">
         <div className="flex flex-col gap-6">
-          <SectionTag icon={Zap} label="OUR STORY" />
+          <SectionTag label="OUR STORY" />
           <div className="flex flex-col gap-6">
             <h2 className="bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4.5rem)] font-bold leading-[1.2] text-transparent sm:text-[clamp(2.5rem,4.3vw,4.5rem)]">
               From Idea to Impact
@@ -241,7 +240,7 @@ function CapabilitiesPanel() {
     <section className="bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="mx-auto flex max-w-design flex-col gap-10 md:gap-16">
         <div className="flex flex-col gap-6">
-          <SectionTag icon={Zap} label="CAPABILITIES" />
+          <SectionTag label="CAPABILITIES" />
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Crafting Powerful Solutions
@@ -306,7 +305,7 @@ function MethodologySection() {
     <section className="bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]">
       <div className="mx-auto flex max-w-design flex-col gap-10 md:gap-16">
         <div className="flex flex-col items-center gap-6 text-center">
-          <SectionTag icon={Zap} label="OUR APPROACH" />
+          <SectionTag label="OUR APPROACH" />
           <h2 className="bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
             OUR ENGINEERING METHODOLOGY.
           </h2>
@@ -344,7 +343,7 @@ function CaseStudiesSection() {
     <section className="bg-bg px-4 py-20 sm:px-8 md:py-24 lg:px-12 xl:px-16 xl:py-[120px] 2xl:px-[120px] min-[1800px]:px-[200px]" id="case-studies">
       <div className="mx-auto flex max-w-design flex-col gap-10 md:gap-16">
         <div className="flex flex-col gap-6">
-          <SectionTag icon={Zap} label="OUR WORK" />
+          <SectionTag label="OUR WORK" />
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold capitalize leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Recent case studies

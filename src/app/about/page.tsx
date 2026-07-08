@@ -16,6 +16,9 @@ import {
 import { FaqSection, TestimonialsSection, TrustSection } from "@/components/sections";
 import { ActionButton } from "@/components/ui/action-button";
 import { SectionTag } from "@/components/ui/section-tag";
+import { SectionDivider } from "@/components/ui/section-divider";
+import { TextReveal } from "@/components/ui/text-reveal";
+import { ImageReveal } from "@/components/ui/image-reveal";
 import { imageAssets } from "@/constants/assets";
 import { capabilityItems, capabilityTags } from "@/constants/content";
 
@@ -152,9 +155,12 @@ function StorySection() {
         <div className="flex flex-col gap-6">
           <SectionTag label="OUR STORY" />
           <div className="flex flex-col gap-6">
-            <h2 className="bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4.5rem)] font-bold leading-[1.2] text-transparent sm:text-[clamp(2.5rem,4.3vw,4.5rem)]">
+            <TextReveal
+              as="h2"
+              className="bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4.5rem)] font-bold leading-[1.2] text-transparent sm:text-[clamp(2.5rem,4.3vw,4.5rem)]"
+            >
               From Idea to Impact
-            </h2>
+            </TextReveal>
             <p className="font-inter text-base leading-[1.5] text-textSoft sm:text-xl sm:leading-[1.4]">
               Founded on the principle that digital products should be as beautiful as they are
               functional, Lumina began as a small collective of designers and engineers driven by a
@@ -183,27 +189,29 @@ function StorySection() {
           </div>
         </div>
 
-        <figure className="relative min-h-[340px] overflow-hidden rounded-[8px] border border-white/[0.03] sm:min-h-[420px] xl:min-h-[463px]">
-          <Image
-            alt="Darken team collaborating in Dhaka"
-            className="object-cover"
-            fill
-            sizes="(min-width: 1280px) 724px, 100vw"
-            src={imageAssets.aboutTeam}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#090401] via-transparent to-transparent" />
-          <figcaption className="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-4 sm:inset-x-6 sm:bottom-6">
-            <div>
-              <p className="font-inter text-xs leading-4 text-textMuted">HQ</p>
-              <p className="font-inter text-base leading-5 text-white">
-                Dhaka &middot; Bangladesh &middot; Remote
-              </p>
-            </div>
-            <span className="rounded-full border border-white/10 bg-[#090401]/35 px-4 py-2 font-inter text-xs leading-4 text-white backdrop-blur">
-              Open positions
-            </span>
-          </figcaption>
-        </figure>
+        <ImageReveal direction="right" className="relative min-h-[340px] overflow-hidden rounded-[8px] border border-white/[0.03] sm:min-h-[420px] xl:min-h-[463px]">
+          <figure className="h-full w-full">
+            <Image
+              alt="Darken team collaborating in Dhaka"
+              className="object-cover"
+              fill
+              sizes="(min-width: 1280px) 724px, 100vw"
+              src={imageAssets.aboutTeam}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#090401] via-transparent to-transparent" />
+            <figcaption className="absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-4 sm:inset-x-6 sm:bottom-6">
+              <div>
+                <p className="font-inter text-xs leading-4 text-textMuted">HQ</p>
+                <p className="font-inter text-base leading-5 text-white">
+                  Dhaka &middot; Bangladesh &middot; Remote
+                </p>
+              </div>
+              <span className="rounded-full border border-white/10 bg-[#090401]/35 px-4 py-2 font-inter text-xs leading-4 text-white backdrop-blur">
+                Open positions
+              </span>
+            </figcaption>
+          </figure>
+        </ImageReveal>
       </div>
     </section>
   );
@@ -248,7 +256,7 @@ function CapabilitiesPanel() {
           </div>
         </div>
         <div className="grid overflow-hidden border border-white/[0.05] bg-card/60 xl:grid-cols-[500px_1fr]">
-          <aside className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px]">
+          <aside className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px] xl:sticky xl:top-24 xl:self-start">
             <nav aria-label="Capabilities" className="flex flex-col gap-3 sm:gap-4">
               {capabilityItems.map((item, index) => (
                 <a
@@ -265,35 +273,37 @@ function CapabilitiesPanel() {
               ))}
             </nav>
           </aside>
-          <article className="relative flex min-h-[420px] items-end overflow-hidden sm:min-h-[500px] xl:min-h-[518px]">
-            <Image
-              alt="Branding system interface preview"
-              className="object-cover opacity-80"
-              fill
-              sizes="(min-width: 1280px) 1020px, 100vw"
-              src={imageAssets.aboutCapabilities}
-            />
-            <div className="absolute inset-0 bg-[#0b0b0b]/80" />
-            <div className="relative flex w-full flex-col gap-5 bg-gradient-to-b from-white/0 to-white/[0.01] p-5 backdrop-blur-[2px] sm:p-8 md:gap-[23px] md:p-12">
-              <h3 className="font-montserrat text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.2] text-[#f5f5f5] sm:text-5xl">
-                Branding
-              </h3>
-              <p className="max-w-[850px] font-inter text-base leading-[1.35] text-[#f5f5f5]/60 sm:text-xl md:text-2xl md:leading-[1.2]">
-                Crafting strong, memorable brand identities that connect with your audience and
-                build long-term trust.
-              </p>
-              <div className="flex flex-wrap gap-3 pt-2 sm:gap-4 sm:pt-4">
-                {capabilityTags.map((tag) => (
-                  <span
-                    className="border border-white/10 bg-title-gradient px-3 py-2 font-montserrat text-xs font-semibold capitalize leading-[1.2] tracking-[1px] text-bg sm:px-[17px] sm:py-[9px] sm:text-sm md:text-base"
-                    key={tag}
-                  >
-                    {tag}
-                  </span>
-                ))}
+          <ImageReveal direction="bottom" className="relative flex min-h-[420px] items-end overflow-hidden sm:min-h-[500px] xl:min-h-[518px]">
+            <article className="h-full w-full">
+              <Image
+                alt="Branding system interface preview"
+                className="object-cover opacity-80"
+                fill
+                sizes="(min-width: 1280px) 1020px, 100vw"
+                src={imageAssets.aboutCapabilities}
+              />
+              <div className="absolute inset-0 bg-[#0b0b0b]/80" />
+              <div className="relative flex w-full flex-col gap-5 bg-gradient-to-b from-white/0 to-white/[0.01] p-5 backdrop-blur-[2px] sm:p-8 md:gap-[23px] md:p-12">
+                <h3 className="font-montserrat text-[clamp(2rem,9vw,3rem)] font-semibold leading-[1.2] text-[#f5f5f5] sm:text-5xl">
+                  Branding
+                </h3>
+                <p className="max-w-[850px] font-inter text-base leading-[1.35] text-[#f5f5f5]/60 sm:text-xl md:text-2xl md:leading-[1.2]">
+                  Crafting strong, memorable brand identities that connect with your audience and
+                  build long-term trust.
+                </p>
+                <div className="flex flex-wrap gap-3 pt-2 sm:gap-4 sm:pt-4">
+                  {capabilityTags.map((tag) => (
+                    <span
+                      className="border border-white/10 bg-title-gradient px-3 py-2 font-montserrat text-xs font-semibold capitalize leading-[1.2] tracking-[1px] text-bg sm:px-[17px] sm:py-[9px] sm:text-sm md:text-base"
+                      key={tag}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </article>
+            </article>
+          </ImageReveal>
         </div>
       </div>
     </section>
@@ -306,9 +316,12 @@ function MethodologySection() {
       <div className="mx-auto flex max-w-design flex-col gap-10 md:gap-16">
         <div className="flex flex-col items-center gap-6 text-center">
           <SectionTag label="OUR APPROACH" />
-          <h2 className="bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
+          <TextReveal
+            as="h2"
+            className="bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]"
+          >
             OUR ENGINEERING METHODOLOGY.
-          </h2>
+          </TextReveal>
         </div>
         <div className="grid overflow-hidden border border-borderStrong md:grid-cols-2 xl:grid-cols-3">
           {methodology.map(({ title, description, icon: Icon }, index) => (
@@ -423,13 +436,21 @@ export default function AboutPage() {
   return (
     <main>
       <AboutHero />
+      <SectionDivider variant="glow" />
       <TrustSection />
+      <SectionDivider />
       <StorySection />
+      <SectionDivider variant="glow" />
       <MissionVisionSection />
+      <SectionDivider />
       <CapabilitiesPanel />
+      <SectionDivider variant="glow" />
       <MethodologySection />
+      <SectionDivider />
       <CaseStudiesSection />
+      <SectionDivider variant="glow" />
       <TestimonialsSection />
+      <SectionDivider />
       <FaqSection />
       <CtaBand />
     </main>

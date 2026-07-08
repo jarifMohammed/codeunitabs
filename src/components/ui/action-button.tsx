@@ -1,6 +1,8 @@
 "use client";
 
-import type { ButtonHTMLAttributes, MouseEvent, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { useRef } from "react";
+import { motion, type HTMLMotionProps, useMotionValue, useSpring } from "framer-motion";
 
 import { submitContactIntent, type ContactAction } from "@/services/contact.service";
 import { cn } from "@/utils/cn";
@@ -8,11 +10,12 @@ import { cn } from "@/utils/cn";
 type ButtonVariant = "primary" | "secondary" | "light";
 type ButtonSize = "sm" | "md" | "lg";
 
-type ActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ActionButtonProps = Omit<HTMLMotionProps<"button">, "size"> & {
   actionName: ContactAction;
   variant?: ButtonVariant;
   size?: ButtonSize;
   children: ReactNode;
+  magnetic?: boolean;
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -36,21 +39,36 @@ export function ActionButton({
   size = "md",
   className,
   children,
-  onClick,
-  ...props
+  magnetic = true,
 }: ActionButtonProps) {
-  async function handleActionClick(event: MouseEvent<HTMLButtonElement>) {
-    onClick?.(event);
+  const ref = useRef<HTMLButtonElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 200, damping: 15 });
+  const springY = useSpring(y, { stiffness: 200, damping: 15 });
 
-    if (event.defaultPrevented) {
-      return;
-    }
-
+  async function handleClick() {
     await submitContactIntent(actionName);
   }
 
+  function handleMouseMove(e: React.MouseEvent) {
+    if (!magnetic) return;
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set((e.clientX - centerX) * 0.2);
+    y.set((e.clientY - centerY) * 0.2);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
   return (
-    <button
+    <motion.button
+      ref={ref}
       className={cn(
         "inline-flex max-w-full items-center justify-center rounded-lg text-center font-semibold tracking-wide",
         "transition-all duration-300 ease-out",
@@ -61,11 +79,13 @@ export function ActionButton({
         sizeClasses[size],
         className,
       )}
-      onClick={handleActionClick}
+      style={{ x: springX, y: springY }}
+      onClick={handleClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       type="button"
-      {...props}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }

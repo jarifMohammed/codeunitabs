@@ -138,7 +138,7 @@ export function CapabilitiesSection() {
           style={{ transitionDelay: panelInView ? "100ms" : "0ms" }}
         >
           <motion.aside
-            className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px]"
+            className="bg-[#050505] px-5 py-6 sm:px-8 sm:py-8 xl:pb-[83px] xl:sticky xl:top-24 xl:self-start"
             variants={sidebarVariants}
             initial="hidden"
             animate={panelInView ? "visible" : "hidden"}

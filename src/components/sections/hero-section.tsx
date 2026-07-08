@@ -40,9 +40,7 @@ export function HeroSection() {
         <div className="flex flex-col items-center gap-8 sm:gap-12">
           <div className="flex flex-col items-center gap-3">
             <AnimateIn type="fade-up" delay={250} className="w-full">
-              <h1
-                className="max-w-[1400px] font-montserrat text-[clamp(2.45rem,11vw,4.5rem)] font-bold capitalize leading-[1.2] text-white sm:text-[clamp(3rem,6vw,4.5rem)]"
-              >
+              <h1 className="max-w-[1400px] font-montserrat text-[clamp(2.45rem,11vw,4.5rem)] font-bold capitalize leading-[1.2] text-white sm:text-[clamp(3rem,6vw,4.5rem)]">
                 Empowering Your Business With{" "}
                 <span className="text-accent">Data-Driven Insights</span>
               </h1>

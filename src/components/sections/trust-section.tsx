@@ -49,19 +49,31 @@ export function TrustSection() {
         <AnimateIn type="fade-up" delay={120} className="mx-auto flex w-full max-w-design flex-wrap items-center justify-center gap-x-8 gap-y-5 opacity-50 sm:gap-x-14 xl:justify-between">
           {brandLogos.map(({ label, icon: Icon }, index) => (
             <motion.div
-              className={cn(
-                "flex items-center gap-2 text-[#fafafa] transition-all duration-700 ease-out",
-                "opacity-100 translate-y-0",
-              )}
+              className={cn("flex items-center gap-2 text-[#fafafa]")}
               key={`${label}-${index}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.05, opacity: 0.8 }}
+              transition={{
+                delay: index * 0.08,
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              whileHover={{ scale: 1.1, opacity: 0.8 }}
             >
-              <Icon aria-hidden="true" className="size-5" strokeWidth={1.7} />
-              <span className="font-inter text-base leading-7 sm:text-xl">{label}</span>
+              <motion.span
+                className="inline-flex items-center gap-2"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 3 + index * 0.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: index * 0.2,
+                }}
+              >
+                <Icon aria-hidden="true" className="size-5" strokeWidth={1.7} />
+                <span className="font-inter text-base leading-7 sm:text-xl">{label}</span>
+              </motion.span>
             </motion.div>
           ))}
         </AnimateIn>

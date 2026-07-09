@@ -16,7 +16,7 @@ export function Logo() {
         className="h-8 w-auto"
         priority
       />
-      <span>CodeUnitLabs</span>
+      <span className="text-accent">CodeUnitLabs</span>
     </Link>
   );
 }

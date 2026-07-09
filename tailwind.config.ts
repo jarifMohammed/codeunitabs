@@ -84,6 +84,10 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(-20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        glowPulse: {
+          "0%, 100%": { boxShadow: "0 0 5px rgba(254,74,0,0.2), 0 0 20px rgba(254,74,0,0.1)" },
+          "50%": { boxShadow: "0 0 10px rgba(254,74,0,0.4), 0 0 40px rgba(254,74,0,0.2)" },
+        },
       },
       animation: {
         "fade-in-up": "fadeInUp 0.65s cubic-bezier(0.22,1,0.36,1) both",
@@ -98,6 +102,7 @@ const config: Config = {
         "dot-pulse": "dotPulse 2s ease-in-out infinite",
         "header-slide": "headerSlide 0.6s cubic-bezier(0.22,1,0.36,1) both",
         "shimmer": "shimmer 2.2s linear infinite",
+        "glow-pulse": "glowPulse 3s ease-in-out infinite",
       },
     },
   },

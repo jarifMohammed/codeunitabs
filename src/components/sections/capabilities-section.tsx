@@ -120,9 +120,9 @@ export function CapabilitiesSection() {
             headingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
           )}
         >
-          <SectionTag label="CAPABILITIES" />
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <h2 className="max-w-[1160px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <SectionTag label="CAPABILITIES" />
+            <h2 className="max-w-[800px] bg-title-gradient bg-clip-text font-montserrat text-[clamp(2rem,8vw,4rem)] font-bold uppercase leading-[1.2] text-transparent sm:text-[clamp(2.6rem,4.4vw,4rem)]">
               Crafting Powerful Solutions
             </h2>
           </div>
